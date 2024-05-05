@@ -13,7 +13,9 @@ import { Message } from 'src/app/models/chat';
 import { ProfileUser } from 'src/app/models/user-profile';
 import { ChatsService } from 'src/app/services/chats.service';
 import { UsersService } from 'src/app/services/users.service';
+import * as CryptoJS from 'crypto-js';
 
+const secretKey = 'your-secret-key';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -83,18 +85,23 @@ export class HomeComponent implements OnInit {
         this.chatListControl.setValue([chatId]);
       });
   }
-
+  
   sendMessage() {
     const message = this.messageControl.value;
+    const hashmessage = CryptoJS.SHA256(secretKey, message).toString();
     const selectedChatId = this.chatListControl.value[0];
     if (message && selectedChatId) {
       this.chatsService
-        .addChatMessage(selectedChatId, message)
+        .addChatMessage(selectedChatId, hashmessage)
         .subscribe(() => {
           this.scrollToBottom();
         });
       this.messageControl.setValue('');
     }
+  }
+  decryptText() {
+    const bytes = CryptoJS.AES.decrypt(this.encrypted, secretKey);
+    this.decrypted = bytes.toString(CryptoJS.enc.Utf8);
   }
 
   scrollToBottom() {
