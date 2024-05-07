@@ -78,16 +78,22 @@
     </div>
     <div class="input-area">
       <mat-form-field appearance="outline">
-        <div class="toggle-container"[class.active]="value" (click)="toggle()">
-          <div class="slider"></div>
-        </div>
+        
         <input
           matInput
           placeholder="Enter your message..."
           [formControl]="messageControl"
           (keydown.enter)="sendMessage()"
         />
-        <button type="button" class="btn btn-dark" (click)="decryptText()">Decrypt</button>
+        <div>
+          <mat-button-toggle-group #toggleBtn="matButtonToggleGroup"> 
+            <mat-button-toggle value="Toggle Button 1" (click)="toggle()"> 
+                Encrypt 
+            </mat-button-toggle> 
+            <mat-button-toggle value="Toggle Button 2" (click)="decryptText()"> 
+                Decrypt 
+            </mat-button-toggle> 
+        </mat-button-toggle-group></div>
         <button mat-icon-button matSuffix (click)="sendMessage()">
           <mat-icon>send</mat-icon>
         </button>

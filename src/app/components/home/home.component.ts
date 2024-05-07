@@ -15,6 +15,8 @@ import { ChatsService } from 'src/app/services/chats.service';
 import { UsersService } from 'src/app/services/users.service';
 import * as CryptoJS from 'crypto-js';
 
+
+
 const secretKey = 'your_se';
 
 @Component({
@@ -60,6 +62,8 @@ export class HomeComponent implements OnInit {
     private chatsService: ChatsService
   ) {}
 
+
+
   ngOnInit(): void {
     this.messages$ = this.chatListControl.valueChanges.pipe(
       map((value) => value[0]),
@@ -72,10 +76,7 @@ export class HomeComponent implements OnInit {
   @Input() value: boolean | undefined;
   @Output() valueChange = new EventEmitter<boolean>();
 
-  toggle() {
-    this.value = !this.value;
-    this.valueChange.emit(this.value);
-  }
+  
   createChat(user: ProfileUser) {
     this.chatsService
       .isExistingChat(user.uid)
@@ -93,14 +94,22 @@ export class HomeComponent implements OnInit {
       });
   }
   hashmessage='';
-
+  value2=false
+  toggle() {
+    this.value2 = true;
+    this.valueChange.emit(this.value2);
+    const message = this.messageControl.value;
+    this.hashmessage = CryptoJS.AES.encrypt(message, secretKey).toString();
+    this.messageControl.setValue(this.hashmessage);
+    this.value2 = false;
+    
+  }
   sendMessage() {
     const message = this.messageControl.value;
     const selectedChatId = this.chatListControl.value[0];
-    this.hashmessage = CryptoJS.AES.encrypt(message, secretKey).toString();
     if (message && selectedChatId) {
       this.chatsService
-        .addChatMessage(selectedChatId,this.hashmessage)
+        .addChatMessage(selectedChatId,message)
         .subscribe(() => {
           this.scrollToBottom();
         });
@@ -109,7 +118,6 @@ export class HomeComponent implements OnInit {
   }
   decryptText() {
     const message = this.messageControl.value;
-    const selectedChatId = this.chatListControl.value[0];
     const bytes = CryptoJS.AES.decrypt(message, secretKey);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     this.messageControl.setValue(decrypted);

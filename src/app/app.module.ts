@@ -31,6 +31,7 @@ import { DateDisplayPipe } from './pipes/date-display.pipe';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MatDividerModule } from '@angular/material/divider';
     ReactiveFormsModule,
     AppRoutingModule,
     FormsModule,
+    MatButtonToggleModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
