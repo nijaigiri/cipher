@@ -78,6 +78,9 @@
     </div>
     <div class="input-area">
       <mat-form-field appearance="outline">
+        <div class="toggle-container"[class.active]="value" (click)="toggle()">
+          <div class="slider"></div>
+        </div>
         <input
           matInput
           placeholder="Enter your message..."

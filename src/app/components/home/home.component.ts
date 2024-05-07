@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild ,EventEmitter,Input,Output} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   combineLatest,
@@ -69,7 +69,13 @@ export class HomeComponent implements OnInit {
       })
     );
   }
+  @Input() value: boolean | undefined;
+  @Output() valueChange = new EventEmitter<boolean>();
 
+  toggle() {
+    this.value = !this.value;
+    this.valueChange.emit(this.value);
+  }
   createChat(user: ProfileUser) {
     this.chatsService
       .isExistingChat(user.uid)
