@@ -84,6 +84,7 @@
           [formControl]="messageControl"
           (keydown.enter)="sendMessage()"
         />
+        <button type="button" class="btn btn-dark" (click)="decryptText()">Decrypt</button>
         <button mat-icon-button matSuffix (click)="sendMessage()">
           <mat-icon>send</mat-icon>
         </button>
