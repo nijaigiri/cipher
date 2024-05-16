@@ -95,11 +95,12 @@ export class HomeComponent implements OnInit {
   }
   hashmessage='';
   value2=false
+  s = this.chatListControl.value;
   toggle() {
     this.value2 = true;
     this.valueChange.emit(this.value2);
     const message = this.messageControl.value;
-    this.hashmessage = CryptoJS.AES.encrypt(message, secretKey).toString();
+    this.hashmessage = CryptoJS.AES.encrypt(message, this.s).toString();
     this.messageControl.setValue(this.hashmessage);
     this.value2 = false;
     
@@ -118,7 +119,7 @@ export class HomeComponent implements OnInit {
   }
   decryptText() {
     const message = this.messageControl.value;
-    const bytes = CryptoJS.AES.decrypt(message, secretKey);
+    const bytes = CryptoJS.AES.decrypt(message, this.s);
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     this.messageControl.setValue(decrypted);
   }
